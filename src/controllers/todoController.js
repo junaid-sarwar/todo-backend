@@ -1,6 +1,5 @@
 const TodoModel = require("../models/TodoModel.js");
 
-// Create a new Todo
 const createTodo = async (req, res) => {
     const { title, completed, priority } = req.body;
   
@@ -18,7 +17,7 @@ const createTodo = async (req, res) => {
         data: todo
       });
     } catch (err) {
-      console.error("Error creating todo:", err); // Log the error to console
+      console.error("Error creating todo:", err);
       res.status(500).json({
         message: 'Failed to create todo',
         success: false,
