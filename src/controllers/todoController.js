@@ -1,14 +1,16 @@
 const TodoModel = require("../models/TodoModel.js");
+const user = require('../middlewares/authMiddleware.js')
 
 const createTodo = async (req, res) => {
     const { title, completed, priority } = req.body;
   
     try {
-      const todo = new TodoModel({
-        title,
-        completed,
-        priority,
-      });
+        const todo = new TodoModel({
+            title,
+            completed,
+            priority,
+            user: req.user._id
+          });          
   
       await todo.save();
       res.status(201).json({
@@ -34,7 +36,7 @@ const getAllTodo = async (req, res) => {
         let query = {};
         if (priority) query.priority = priority; // Filter by priority
 
-        const data = await TodoModel.find(query).sort({ createdAt: -1 }); // Sorting by date
+        const data = await TodoModel.find({ user: req.user._id, ...query }).sort({ createdAt: -1 });
 
         res.status(200).json({
             message: 'Todos fetched successfully',
